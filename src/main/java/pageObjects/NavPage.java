@@ -33,9 +33,9 @@ public class NavPage extends base {
 			}
 
 			if (i == 5) {
-				
-				
-				Thread.sleep(1500); //No funciona el explicit wait
+			
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(prop.getProperty("newBtn"))));
+				//Thread.sleep(1500); //No funciona el explicit wait
 				driver.findElement(By.xpath(prop.getProperty("newBtn"))).click();
 				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("cancel5Btn"))));
 				driver.findElement(By.xpath(prop.getProperty("cancel5Btn"))).click();
