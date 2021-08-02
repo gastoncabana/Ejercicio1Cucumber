@@ -26,7 +26,7 @@ Feature: Navigate
     Given user  Navigates to accounts and click New
     Then try to creates new Account record without filling required input
     And waits expected error
-    And Close the Browser after error
+    And Close the Browser
 
   Scenario: "4"- Create contact record in other tab
     Given user open contacts in a new tab

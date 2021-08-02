@@ -258,11 +258,7 @@ public class stepDefinitions extends DriverFactory {
 		}
 
 	}
-	@After
-	@And("^Close the Browser after error$")
-    public void close_the_browser_after_error() throws Throwable {
-       driver.close();
-    }
+
 	// Parte 4
 
 	@Given("^user open contacts in a new tab$")
@@ -452,13 +448,12 @@ public class stepDefinitions extends DriverFactory {
 
 		}
 		
-		
 		ap.getSaveBtn().click();
-
     }
 	
 		
-
+		
+	
 
 	@And("^verify if options where changed$")
 	public void verify_if_options_where_changed() throws Throwable {
