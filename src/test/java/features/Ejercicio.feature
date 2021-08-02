@@ -7,11 +7,11 @@ Feature: Navigate
     Then Click Flat Icon
     And Select service
 
-  Scenario Outline: "1" -  Positive test validating loging and navigating between tabs
+  Scenario: "1" -  Positive test validating loging and navigating between tabs
     Given Navigates between all the tabs, click new button and cancel
     And Close the Browser
 
-  Scenario Outline: "2" -  Create new account record
+  Scenario: "2" -  Create new account record
     Given user  Navigates to accounts and click New
     Then Fill inputs information
     And fill combos Information
@@ -20,15 +20,15 @@ Feature: Navigate
     And fill Additional Address Information Combo
     And selects calendar day
     Then creates the Account Record
-    And Close the Browser"""
+    And Close the Browser
 
-  Scenario Outline: "3" - Check error while creating new Account Record
+  Scenario: "3" - Check error while creating new Account Record
     Given user  Navigates to accounts and click New
     Then try to creates new Account record without filling required input
     And waits expected error
-    And Close the Browser
+    And Close the Browser after error
 
-  Scenario Outline: "4"- Create contact record in other tab
+  Scenario: "4"- Create contact record in other tab
     Given user open contacts in a new tab
     Then fill Contact inputs
     And select Account Name
@@ -41,14 +41,14 @@ Feature: Navigate
     And returns to Home page
     And Close the Browser
     
-@do
-  Scenario Outline: "5"  - Compare  values from combobox Type, Rating & Upsell oportunity
+
+  Scenario: "5"  - Compare  values from combobox Type, Rating & Upsell oportunity
     Given user  Navigates to accounts  clicks arrow and clicks edit
-    Then clicks on each  Option and change it
+    Then clicks on each  Option , change it and saves
     And verify if options where changed
     And Close the Browser
 
-  Scenario Outline: "6" - Check error while creating new Account Record and save it
+  Scenario: "6" - Check error while creating new Account Record and save it
     Given user  Navigates to accounts  clicks arrow and clicks edit
     And change Employees value
     Then saves the change and saves error msg
@@ -65,6 +65,6 @@ Feature: Navigate
       | accountName | employees | accountSite     |
       | Cuenta1     | 099111111 | www.cuenta1.com |
       | Cuenta2     | 099222222 | www.cuenta2.com |
-      | Cuenta3     | 099333333 | www.cuenta3.com |
-      | Cuenta4     | 099444444 | www.cuenta4.com |
-      | Cuenta5     | 099555555 | www.cuenta5.com |
+      #| Cuenta3     | 099333333 | www.cuenta3.com |
+      #| Cuenta4     | 099444444 | www.cuenta4.com |
+      #| Cuenta5     | 099555555 | www.cuenta5.com |

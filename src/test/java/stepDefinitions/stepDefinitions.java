@@ -258,7 +258,11 @@ public class stepDefinitions extends DriverFactory {
 		}
 
 	}
-
+	@After
+	@And("^Close the Browser after error$")
+    public void close_the_browser_after_error() throws Throwable {
+       driver.close();
+    }
 	// Parte 4
 
 	@Given("^user open contacts in a new tab$")
@@ -416,8 +420,8 @@ public class stepDefinitions extends DriverFactory {
 
 	}
 
-	@Then("^clicks on each  Option and change it$")
-	public void clicks_on_each_option_and_change_it() throws Throwable {
+	@Then("^clicks on each  Option , change it and saves$")
+    public void clicks_on_each_option_change_it_and_saves() throws Throwable {
 		AccountPage ap = new AccountPage(driver);
 
 		String[] comboNames = ap.getChangeCombos();
@@ -447,8 +451,14 @@ public class stepDefinitions extends DriverFactory {
 			selected.click();
 
 		}
+		
+		
+		ap.getSaveBtn().click();
 
-	}
+    }
+	
+		
+
 
 	@And("^verify if options where changed$")
 	public void verify_if_options_where_changed() throws Throwable {
@@ -477,7 +487,7 @@ public class stepDefinitions extends DriverFactory {
 
 		if (ratingOption != ratingOptionChanged) {
 			Assert.assertTrue(true);
-			System.out.println("Opcion type modificada");
+			System.out.println("Opcion rating modificada");
 		} else {
 			Assert.assertTrue(false);
 		}
@@ -485,7 +495,7 @@ public class stepDefinitions extends DriverFactory {
 		
 		if(upsellOportunityOption != upsellOportunityOptionChanged) {
 			Assert.assertTrue(true);
-			System.out.println("Opcion type modificada");
+			System.out.println("Opcion upsell modificada");
 		}else {
 			Assert.assertTrue(false);
 		}
@@ -540,7 +550,9 @@ public class stepDefinitions extends DriverFactory {
 		accountNameW.sendKeys(accountname);
 		accountSiteLblW.sendKeys(accountsite);
 		employeesLblW.sendKeys(employees);
-		System.out.println(accountsite);
+
+		
+		
 
 	}
 
