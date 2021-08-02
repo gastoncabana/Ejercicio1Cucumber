@@ -15,11 +15,12 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
-public class base {
+public class DriverFactory {
 
 	public static WebDriver driver;
-	public static WebDriverWait wait ;
+	public  WebDriverWait wait ;
 	public static Properties prop;
+	
 	
 
 	public WebDriver initializeDriver() throws IOException {
@@ -46,6 +47,7 @@ public class base {
 				options.addArguments("headless");
 			}
 			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
 			// execute in chrome driver
 
 		} else if (browserName.equals("firefox")) {
@@ -57,7 +59,7 @@ public class base {
 //	IE code
 		}
 
-		wait = new WebDriverWait(driver,10000L);
+		wait = new WebDriverWait(driver,20000L);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
 		
