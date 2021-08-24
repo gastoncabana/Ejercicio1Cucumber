@@ -10,8 +10,8 @@ import io.cucumber.junit.CucumberOptions;
 
 @CucumberOptions(features = "src/test/java/features",
 glue = "stepDefinitions")
-
-/*@CucumberOptions(
+/*
+@CucumberOptions(
         features = "src/test/java/features",
         glue="stepDefinitions",
         tags = "@do")*/

@@ -1,56 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2021-07-26T13:00:33 UYT" name="Default suite" finished-at="2021-07-26T13:00:33 UYT" duration-ms="33">
+  <suite started-at="2021-08-12T14:27:13 UYT" name="Default suite" finished-at="2021-08-12T14:27:34 UYT" duration-ms="21593">
     <groups>
     </groups>
-    <test started-at="2021-07-26T13:00:33 UYT" name="Default test" finished-at="2021-07-26T13:00:33 UYT" duration-ms="33">
-      <class name="Ejercicio1.B.App">
-        <test-method signature="Login()[pri:0, instance:Ejercicio1.B.App@a3d8174]" started-at="2021-07-26T13:00:33 UYT" name="Login" finished-at="2021-07-26T13:00:33 UYT" duration-ms="6" status="FAIL">
-          <exception class="java.lang.NullPointerException">
-            <message>
-              <![CDATA[Cannot invoke "java.util.Properties.getProperty(String)" because "pageObjects.LoginPage.prop" is null]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[java.lang.NullPointerException: Cannot invoke "java.util.Properties.getProperty(String)" because "pageObjects.LoginPage.prop" is null
-at pageObjects.LoginPage.salesforce(LoginPage.java:24)
-at Ejercicio1.B.App.Login(App.java:20)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
-at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-at java.base/java.lang.reflect.Method.invoke(Method.java:564)
-at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:133)
-at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:598)
-at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
-at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
-at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:824)
-at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
-at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
-at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-at org.testng.TestRunner.privateRun(TestRunner.java:794)
-at org.testng.TestRunner.run(TestRunner.java:596)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:377)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:371)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:332)
-at org.testng.SuiteRunner.run(SuiteRunner.java:276)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1212)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1134)
-at org.testng.TestNG.runSuites(TestNG.java:1063)
-at org.testng.TestNG.run(TestNG.java:1031)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-]]>
-            </full-stacktrace>
-          </exception> <!-- java.lang.NullPointerException -->
+    <test started-at="2021-08-12T14:27:13 UYT" name="Default test" finished-at="2021-08-12T14:27:34 UYT" duration-ms="21593">
+      <class name="testNGClasses.AccountTab">
+        <test-method is-config="true" signature="driver()[pri:0, instance:testNGClasses.AccountTab@505fc5a4]" started-at="2021-08-12T14:27:13 UYT" name="driver" finished-at="2021-08-12T14:27:16 UYT" duration-ms="3254" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- Login -->
-      </class> <!-- Ejercicio1.B.App -->
+        </test-method> <!-- driver -->
+        <test-method is-config="true" signature="login()[pri:0, instance:testNGClasses.AccountTab@505fc5a4]" started-at="2021-08-12T14:27:16 UYT" name="login" finished-at="2021-08-12T14:27:19 UYT" duration-ms="3546" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method signature="parte6()[pri:6, instance:testNGClasses.AccountTab@505fc5a4]" started-at="2021-08-12T14:27:19 UYT" name="parte6" finished-at="2021-08-12T14:27:30 UYT" duration-ms="10642" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- parte6 -->
+        <test-method is-config="true" signature="close()[pri:0, instance:testNGClasses.AccountTab@505fc5a4]" started-at="2021-08-12T14:27:30 UYT" name="close" finished-at="2021-08-12T14:27:34 UYT" duration-ms="4124" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- close -->
+      </class> <!-- testNGClasses.AccountTab -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

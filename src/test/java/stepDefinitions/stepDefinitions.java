@@ -12,7 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
-import io.cucumber.java.After;
+
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -225,7 +225,10 @@ public class stepDefinitions extends DriverFactory {
 	public void creates_the_account_record() throws Throwable {
 
 		AccountPage ap = new AccountPage(driver);
+		//wait.until(ExpectedConditions.visibilityOf(ap.getSaveBtn()));
+		
 		ap.getSaveBtn().click();
+		Thread.sleep(1500);
 
 	}
 
@@ -356,10 +359,9 @@ public class stepDefinitions extends DriverFactory {
 		String[] AdditionalInfoLbl = cp.getAdditionalInfoLbl();
 		String[] completeAdditionalLbl = cp.getAdditionalInfoLblData();
 
-		Thread.sleep(3000);
+		
 		for (int i = 0; i < AdditionalInfoLbl.length; i++) {
 			WebElement input = cp.getlblName(AdditionalInfoLbl[i]);
-			Thread.sleep(3000);
 			input.sendKeys(completeAdditionalLbl[i]);
 
 		}
@@ -447,7 +449,7 @@ public class stepDefinitions extends DriverFactory {
 			selected.click();
 
 		}
-		
+		Thread.sleep(1000);
 		ap.getSaveBtn().click();
     }
 	
@@ -469,8 +471,8 @@ public class stepDefinitions extends DriverFactory {
 		String ratingOptionChanged = ap.getChangeCombosOptions()[1];
 		String upsellOportunityOptionChanged = ap.getChangeLastCombosOptions()[0];
 
+		
 		Assert.assertNotEquals(ratingOption, ratingOptionChanged);
-
 		Assert.assertNotEquals(upsellOportunityOption, upsellOportunityOptionChanged);
 
 		if (typeOption != typeOptionChanged) {
@@ -545,10 +547,10 @@ public class stepDefinitions extends DriverFactory {
 		accountNameW.sendKeys(accountname);
 		accountSiteLblW.sendKeys(accountsite);
 		employeesLblW.sendKeys(employees);
-
 		
+		Thread.sleep(1000);
 		
-
-	}
+		driver.close();
+}
 
 }

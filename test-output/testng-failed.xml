@@ -3,11 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Ejercicio1.B.App">
+      <class name="testNGClasses.AccountTab">
         <methods>
-          <include name="Login"/>
+          <include name="driver"/>
+          <include name="close"/>
+          <include name="login"/>
+          <include name="parte6"/>
         </methods>
-      </class> <!-- Ejercicio1.B.App -->
+      </class> <!-- testNGClasses.AccountTab -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
