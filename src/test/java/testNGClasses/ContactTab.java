@@ -7,12 +7,18 @@ import java.util.Set;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import pageObjects.AccountPage;
+import pageObjects.ContactPage;
+import pageObjects.LoginPage;
+import pageObjects.MainPage;
 import resources.DriverFactory;
 
 public class ContactTab extends DriverFactory {
@@ -25,19 +31,19 @@ public class ContactTab extends DriverFactory {
 
 	static String childId = "";
 
-	@BeforeTest
+	@BeforeMethod
 	public void driver() throws IOException {
 
 		driver = initializeDriver();
 		driver.get(prop.getProperty("url"));
 	}
 
-	
-	@BeforeTest
+	@BeforeMethod
 	public void login() {
-		driver.findElement(By.xpath(prop.getProperty("userBtn"))).sendKeys(prop.getProperty("user"));
-		driver.findElement(By.xpath(prop.getProperty("passBtn"))).sendKeys(prop.getProperty("pass"));
-		driver.findElement(By.xpath(prop.getProperty("loginBtn"))).click();
+		LoginPage lp = new LoginPage(driver);
+		lp.salesforce();
+		lp.login();
+
 	}
 
 	@Test
@@ -54,29 +60,32 @@ public class ContactTab extends DriverFactory {
 		fillAdditionalAddressInformationCombo();
 		create();
 		returnHomePage();
-	}
-	
-	//Methods
-	public  void clickWaffle() throws Exception {
-
-		Thread.sleep(1500L);
-		driver.findElement(By.xpath(prop.getProperty("iconWafleBtn"))).click();
-		Thread.sleep(3000L);
-		driver.findElement(By.xpath(prop.getProperty("iconWafleServiceBtn"))).click(); // Changing
-		Thread.sleep(6000L);
+		close();
+		
 	}
 
-	public  void clickService() throws InterruptedException {
+	// Methods
+	public void clickWaffle() throws Exception {
 
-		driver.findElement(By.xpath("//one-app-nav-bar-item-root[4]")).click();
-		Thread.sleep(3000L);
-		driver.findElement(By.xpath(prop.getProperty("newBtn"))).click();
-		Thread.sleep(3000L);
+		MainPage mp = new MainPage(driver);
+		wait.until(ExpectedConditions.visibilityOf(mp.getIconWaffle()));
+		mp.getIconWaffle().click();
+		wait.until(ExpectedConditions.visibilityOf(mp.geticonWaffleBtnService()));
+		mp.geticonWaffleBtnService().click();
 
 	}
 
-	public  void switchTab() {
-	
+	public void clickService() throws InterruptedException {
+
+		ContactPage cp = new ContactPage(driver);
+		wait.until(ExpectedConditions.visibilityOf(cp.getContact()));
+		cp.getContact().click();
+		wait.until(ExpectedConditions.visibilityOf(cp.getnewBtn()));
+		cp.getnewBtn().click();
+
+	}
+
+	public void switchTab() {
 
 		WebElement ContactLink = driver.findElement(By.xpath("//*[@data-id='Contact']/a"));
 
@@ -93,126 +102,116 @@ public class ContactTab extends DriverFactory {
 		driver.switchTo().window(childId);
 
 	}
-	
-	public  void fillInputContactInfo() {
 
-		String contactInfoLbl[] = { "First Name", "Last Name", "Title", "Department", "Phone",
-				"Home Phone", "Mobile", "Other Phone", "Fax","Email","Assistant","Asst. Phone" };
-		String completeContact[] = { "Gaston", "Cabana", "Programmer", "IT", "098356081",
-				"42244554", "098356081", "098356081", "212121","gahonus@gmail.com","N/A","N/A" };
-		for (int i = 0; i < contactInfoLbl.length; i++) {
+	public void fillInputContactInfo() {
 
-			WebElement input = driver.findElement(By
-					.xpath("//label[text()='" + contactInfoLbl[i] + "']//parent::lightning-input//descendant::input"));
-			input.sendKeys(completeContact[i]);
+		ContactPage cp = new ContactPage(driver);
+		String[] lblNames = cp.getcontactInfoLbl();
+		String[] lblNamesComplete = cp.getcontactInfoLblData();
+		for (int i = 0; i < lblNames.length; i++) {
+			WebElement input = cp.getlblName(lblNames[i]);
+			input.sendKeys(lblNamesComplete[i]);
 		}
-		
+
 		driver.findElement(By.xpath("//input[@name='Birthdate']")).sendKeys("12/11/1996");
 	}
 
-	public  void fillComboContactInfo() throws InterruptedException {
+	public void fillComboContactInfo() throws InterruptedException {
 
-		String ContactInfoCombo[] = { "Salutation", "Lead Source"};
-		String SelectContactOption[] = { "//lightning-base-combobox-item [2]", "(//force-record-layout-item)[15]//lightning-base-combobox-item [3]" };
+		ContactPage cp = new ContactPage(driver);
 
-		for (int i = 0; i < ContactInfoCombo.length; i++) {
+		String[] comboNames = cp.getContactInfoCombo();
+		String[] comboNamesOption = cp.getContactInfoComboOption();
 
-			WebElement input = driver.findElement(By.xpath(
-					"//label[text()='" + ContactInfoCombo[i] + "']//parent::lightning-combobox//descendant::input"));
+		for (int i = 0; i < comboNames.length; i++) {
+			WebElement input = cp.getComboName(comboNames[i]);
 			input.click();
-			Thread.sleep(3000L);
-			WebElement selected = driver.findElement(By.xpath(SelectContactOption[i]));
+			WebElement selected = driver.findElement(By.xpath(comboNamesOption[i]));
 			selected.click();
+
 		}
 	}
-	
-	public  void selectAccountName() {
-		driver.findElement(By.xpath("//label[text()='Account Name']//parent::lightning-grouped-combobox//descendant::div")).click();
-		driver.findElement(By.xpath("(//force-record-layout-item)[5]//lightning-base-combobox-item [1]")).click();
+
+	public void selectAccountName() {
+		ContactPage cp = new ContactPage(driver);
+		cp.getAccountName().click();
+		cp.getAccountNameOption().click();
 	}
-	
-	public  void scrollDown() throws InterruptedException {
-	
+
+	public void scrollDown() throws InterruptedException {
+
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0,500)");
 		Thread.sleep(3000);
 		js.executeScript("document.querySelector('.actionBody').scrollTop=5000");
 	}
 
-	public  void fillAddressInformationInputs() throws InterruptedException {
+	public void fillAddressInformationInputs() throws InterruptedException {
+		ContactPage cp = new ContactPage(driver);
 
-		// Fills textarea
-		String AddressInfoTextArea[] = { "Mailing Street", "Other Street" };
-		String AddresTextAreaComplete[] = { "25 De Agosto", "30 de Agosto" };
-		for (int i = 0; i < AddressInfoTextArea.length; i++) {
-
-			WebElement input = driver.findElement(By.xpath("//label[text()='" + AddressInfoTextArea[i]
-					+ "']//parent::lightning-textarea//descendant::textarea"));
-
-			input.sendKeys(AddresTextAreaComplete[i]);
-
+		// Fills textArea
+		String[] textAreaName = cp.getAddressInfoTextArea();
+		String[] textAreaComplete = cp.getAddresInfoTextAreaData();
+		for (int i = 0; i < textAreaName.length; i++) {
+			WebElement input = cp.getTextAreaName(textAreaName[i]);
+			input.sendKeys(textAreaComplete[i]);
 		}
 
-		// Fills Lbl
-		String AddressInfoLbl[] = { "Mailing City", "Mailing State/Province", "Mailing Zip/Postal Code",
-				"Mailing Country", "Other City", "Other State/Province", "Other Zip/Postal Code",
-				"Other Country" };
-		String completeAddress[] = { "Maldonado", "Maldonado", "20000", "Uruguay", "Maldonado", "Maldonado", "20000",
-				"Uruguay" };
-		for (int i = 0; i < AddressInfoLbl.length; i++) {
+		// Fill lbls
 
-			WebElement input = driver.findElement(By
-					.xpath("//label[text()='" + AddressInfoLbl[i] + "']//parent::lightning-input//descendant::input"));
-			input.sendKeys(completeAddress[i]);
+		String[] lblNames = cp.getAddressInfoLbl();
+		String[] lblNamesComplete = cp.getAddressInfoLblData();
+		for (int i = 0; i < lblNames.length; i++) {
 
+			WebElement input = cp.getlblName(lblNames[i]);
+			input.sendKeys(lblNamesComplete[i]);
 		}
 	}
 
-	public  void fillAdditionalAddressInformation() throws InterruptedException {
+	public void fillAdditionalAddressInformation() throws InterruptedException {
+		ContactPage cp = new ContactPage(driver);
 
-		//Fill lbl
-		String AdditionalInfoLbl[] = { "Languages"};
-		String completeAdditionalLbl[] = { "English"};
+		String[] AdditionalInfoLbl = cp.getAdditionalInfoLbl();
+		String[] completeAdditionalLbl = cp.getAdditionalInfoLblData();
+
 		for (int i = 0; i < AdditionalInfoLbl.length; i++) {
-
-			WebElement input = driver.findElement(By.xpath(
-					"//label[text()='" + AdditionalInfoLbl[i] + "']//parent::lightning-input//descendant::input"));
+			WebElement input = cp.getlblName(AdditionalInfoLbl[i]);
 			input.sendKeys(completeAdditionalLbl[i]);
 
 		}
-		
-		String description = "//label[text()='Description']//parent::lightning-textarea//descendant::textarea";
-		driver.findElement(By.xpath(description)).sendKeys("New Description");
+
+		wait.until(ExpectedConditions.visibilityOf(cp.description));
+		cp.description.sendKeys("New Description");
 	}
-	
-	public  void fillAdditionalAddressInformationCombo() throws InterruptedException {
 
-		
-		String AdditionalInfoCombo[] = { "Level"};
-		String SelectAdditionalOption[] = { "(//force-record-layout-item) [20] //lightning-base-combobox-item[2]",};
+	public void fillAdditionalAddressInformationCombo() throws InterruptedException {
 
-		for (int i = 0; i < AdditionalInfoCombo.length; i++) {
+		ContactPage cp = new ContactPage(driver);
 
-			WebElement input = driver.findElement(By.xpath(
-					"//label[text()='"+AdditionalInfoCombo[i]+"']//parent::lightning-combobox//descendant::input"));
+		String[] comboNames = cp.getAdditionalInfoCombo();
+		String[] comboNamesOption = cp.getAdditionalInfoComboOption();
+		Thread.sleep(3000);
+		for (int i = 0; i < comboNames.length; i++) {
+			WebElement input = cp.getComboName(comboNames[i]);
 			input.click();
-			WebElement selected = driver.findElement(By.xpath(SelectAdditionalOption[i]));
+			WebElement selected = driver.findElement(By.xpath(comboNamesOption[i]));
 			selected.click();
 
 		}
 	}
 
-	public static void returnHomePage() throws InterruptedException {
+	public  void returnHomePage() throws InterruptedException {
 		Thread.sleep(1500);
 		driver.switchTo().window(parentId);
+		close();
 	}
-	public static void create() {
-		String save = "//button[@name='SaveEdit']";
-		driver.findElement(By.xpath(save)).click();
+
+	public  void create() {
+		AccountPage ap = new AccountPage(driver);
+		ap.getSaveBtn().click();
 	}
+
 	
-	
-	@AfterClass
 	public void close() {
 		driver.close();
 	}

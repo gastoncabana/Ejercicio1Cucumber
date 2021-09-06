@@ -2,38 +2,42 @@ package testNGClasses;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import pageObjects.AccountPage;
+import pageObjects.LoginPage;
+import pageObjects.MainPage;
+import pageObjects.NavPage;
 import resources.DriverFactory;
 
 public class AccountTab extends DriverFactory {
 
-	@BeforeTest
+	@BeforeMethod
 	public void driver() throws IOException {
 
 		driver = initializeDriver();
 		driver.get(prop.getProperty("url"));
 	}
 
-	@BeforeTest
-	public void login() {
-		driver.findElement(By.xpath(prop.getProperty("userBtn"))).sendKeys(prop.getProperty("user"));
-		driver.findElement(By.xpath(prop.getProperty("passBtn"))).sendKeys(prop.getProperty("pass"));
-		driver.findElement(By.xpath(prop.getProperty("loginBtn"))).click();
+	@BeforeMethod
+	public void login() throws Exception {
+		LoginPage lp = new LoginPage(driver);
+		lp.salesforce();
+		lp.login();
+		clickWaffle();
+
 	}
 
-	/*@Test(priority = 2)
-	public void parte2() throws InterruptedException {
+	@Test(priority = 2)
+	public void parte2() throws Exception {
+
 		navigate();
 		fillInputAccountInfo();
 		fillComboAccountInfo();
@@ -51,15 +55,15 @@ public class AccountTab extends DriverFactory {
 		check();
 	}
 
-	@Test(priority=5)
+	@Test(priority = 5)
 	public void parte5() throws InterruptedException {
 		onlyNavigateToAccount();
 		arrow();
 		changeOptions();
 		verifyChange();
 	}
-	*/
-	@Test (priority=6)
+
+	 @Test (priority=6)
 	public void parte6() throws InterruptedException {
 		onlyNavigateToAccount();
 		arrow();
@@ -71,138 +75,108 @@ public class AccountTab extends DriverFactory {
 
 	public void navigate() throws InterruptedException {
 
-		WebElement iconwaflebtn = driver.findElement(By.xpath(prop.getProperty("iconWafleBtn")));
-		wait.until(ExpectedConditions.visibilityOf(iconwaflebtn));
-		iconwaflebtn.click();
-
-		WebElement iconWafleServiceBtn = driver.findElement(By.xpath(prop.getProperty("iconWafleServiceBtn")));// Changing
-		wait.until(ExpectedConditions.visibilityOf(iconWafleServiceBtn));
-		iconWafleServiceBtn.click();
-
-		WebElement account = driver.findElement(By.xpath("//one-app-nav-bar-item-root[3]"));
-		wait.until(ExpectedConditions.visibilityOf(account));
-		account.click();
-
-		WebElement newBtn = driver.findElement(By.xpath(prop.getProperty("newBtn")));
-		wait.until(ExpectedConditions.visibilityOf(newBtn));
-		newBtn.click();
+		// Va a acounts y hace click en new
+		NavPage np = new NavPage(driver);
+		np.getAccounts().click();
+		np.getNewBtn().click();
 
 	}
 
-	// @Test(priority = 2)
+	public void clickWaffle() throws Exception {
+
+		MainPage mp = new MainPage(driver);
+		wait.until(ExpectedConditions.visibilityOf(mp.getIconWaffle()));
+		mp.getIconWaffle().click();
+		wait.until(ExpectedConditions.visibilityOf(mp.geticonWaffleBtnService()));
+		mp.geticonWaffleBtnService().click();
+
+	}
+
 	public void fillInputAccountInfo() {
+		AccountPage ap = new AccountPage(driver);
 
-		String AccountInfoLbl[] = { "Account Name", "Account Number", "Account Site", "Annual Revenue", "Phone", "Fax",
-				"Website", "Ticker Symbol", "Employees", "SIC Code", };
-		String CompleteAccount[] = { "Subcuenta de Gaston", "7149", "www.Gaston.com", "25000", "098356081", "20291232",
-				"ww.google.com", "Sarasa", "2500", "2000", };
-		for (int i = 0; i < AccountInfoLbl.length; i++) {
-
-			WebElement input = driver.findElement(By
-					.xpath("//label[text()='" + AccountInfoLbl[i] + "']//parent::lightning-input//descendant::input"));
-			input.sendKeys(CompleteAccount[i]);
+		String[] lblNames = ap.getAccountInfoLblNames();
+		String[] lblNamesComplete = ap.getAccountInfoLblNamesComplete();
+		for (int i = 0; i < lblNames.length; i++) {
+			WebElement input = ap.getlblName(lblNames[i]);
+			input.sendKeys(lblNamesComplete[i]);
 		}
+
 	}
 
-	// @Test(priority = 3)
 	public void fillComboAccountInfo() throws InterruptedException {
+		AccountPage ap = new AccountPage(driver);
 
-		String AccountInfoCombo[] = { "Type", "Industry", "Rating", "Ownership" };
-		String SelectAccountOption[] = { "//lightning-base-combobox-item [7]", "//lightning-base-combobox-item [10]",
-				"//lightning-base-combobox-item [3]",
-				"(//force-record-layout-item) [12]//lightning-base-combobox-item [2]" };
+		String[] comboNames = ap.getAccountInfoComboNames();
+		String[] comboNamesOption = ap.getAccountInfoComboNamesOption();
 
-		for (int i = 0; i < AccountInfoCombo.length; i++) {
-
-			WebElement input = driver.findElement(By.xpath(
-					"//label[text()='" + AccountInfoCombo[i] + "']//parent::lightning-combobox//descendant::input"));
+		for (int i = 0; i < comboNames.length; i++) {
+			WebElement input = ap.getcomboName(comboNames[i]);
 			input.click();
-			// Thread.sleep(1000L);
-			WebElement selected = driver.findElement(By.xpath(SelectAccountOption[i]));
+			WebElement selected = driver.findElement(By.xpath(comboNamesOption[i]));
 			selected.click();
+
 		}
+
 	}
 
-	// @Test(priority = 4)
 	public void scrollDown() throws InterruptedException {
-
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0,500)");
-		// Thread.sleep(1000);
 		js.executeScript("document.querySelector('.actionBody').scrollTop=5000");
 	}
 
-	// @Test(priority = 5)
 	public static void fillAddressInformationInputs() throws InterruptedException {
 
-		// Fills textarea
-		String AddressInfoTextArea[] = { "Billing Street", "Shipping Street" };
-		String AddresTextAreaComplete[] = { "25 De Agosto", "30 de Agosto" };
-		for (int i = 0; i < AddressInfoTextArea.length; i++) {
-
-			WebElement input = driver.findElement(By.xpath("//label[text()='" + AddressInfoTextArea[i]
-					+ "']//parent::lightning-textarea//descendant::textarea"));
-
-			input.sendKeys(AddresTextAreaComplete[i]);
-			// Thread.sleep(1000l);
+		AccountPage ap = new AccountPage(driver);
+		String[] textAreaName = ap.getAddressTextAreaName();
+		String[] textAreaComplete = ap.getAddresTextAreaComplete();
+		for (int i = 0; i < textAreaName.length; i++) {
+			WebElement input = ap.getTextAreaName(textAreaName[i]);
+			input.sendKeys(textAreaComplete[i]);
 		}
 
 		// Fills Lbl
-		String AddressInfoLbl[] = { "Billing City", "Billing State/Province", "Billing Zip/Postal Code",
-				"Billing Country", "Shipping City", "Shipping State/Province", "Shipping Zip/Postal Code",
-				"Shipping Country" };
-		String completeAddress[] = { "Maldonado", "Maldonado", "20000", "Uruguay", "Maldonado", "Maldonado", "20000",
-				"Uruguay" };
-		for (int i = 0; i < AddressInfoLbl.length; i++) {
+		String[] lblNames = ap.getAddressInfoLblNames();
+		String[] lblNamesComplete = ap.getAccountInfoLblNamesComplete();
+		for (int i = 0; i < lblNames.length; i++) {
 
-			WebElement input = driver.findElement(By
-					.xpath("//label[text()='" + AddressInfoLbl[i] + "']//parent::lightning-input//descendant::input"));
-			input.sendKeys(completeAddress[i]);
-
-			// Thread.sleep(1000L);
+			WebElement input = ap.getlblName(lblNames[i]);
+			input.sendKeys(lblNamesComplete[i]);
 		}
 	}
 
-	// @Test(priority = 6)
 	public void fillAdditionalAddressInformation() throws InterruptedException {
 
 		// Fill lbl
-		String AdditionalInfoLbl[] = { "Number of Locations", "SLA Serial Number", };
-		String completeAdditionalLbl[] = { "2", "1029231123" };
-		for (int i = 0; i < AdditionalInfoLbl.length; i++) {
+		AccountPage ap = new AccountPage(driver);
+		String[] lblNames = ap.getAditionalAddressInfoLblNames();
+		String[] lblNamesComplete = ap.getAditionalAddressInfoLblComplete();
 
-			WebElement input = driver.findElement(By.xpath(
-					"//label[text()='" + AdditionalInfoLbl[i] + "']//parent::lightning-input//descendant::input"));
-			input.sendKeys(completeAdditionalLbl[i]);
-			// Thread.sleep(1000L);
+		for (int i = 0; i < lblNames.length; i++) {
+			WebElement input = ap.getlblName(lblNames[i]);
+			input.sendKeys(lblNamesComplete[i]);
 		}
 
-		String description = "//label[text()='Description']//parent::lightning-textarea//descendant::textarea";
-		driver.findElement(By.xpath(description)).sendKeys("New Description");
 	}
 
-	// @Test(priority = 7)
 	public void fillAdditionalAddressInformationCombo() throws InterruptedException {
+		AccountPage ap = new AccountPage(driver);
 
-		String AdditionalInfoCombo[] = { "Customer Priority", "Active", "SLA", "Upsell Opportunity" };
-		String SelectAdditionalOption[] = { "(//force-record-layout-item) [19] //lightning-base-combobox-item[2]",
-				"(//force-record-layout-item) [25] //lightning-base-combobox-item[2]",
-				"(//force-record-layout-item) [20] //lightning-base-combobox-item[2]",
-				"(//force-record-layout-item) [24] //lightning-base-combobox-item[2]" };
+		// Fill Additional Info combos
 
-		for (int i = 0; i < AdditionalInfoCombo.length; i++) {
-
-			WebElement input = driver.findElement(By.xpath(
-					"//label[text()='" + AdditionalInfoCombo[i] + "']//parent::lightning-combobox//descendant::input"));
+		String[] comboNames = ap.getAditionalAddresInfoComboNames();
+		String[] comboNamesOption = ap.getAditionalAddresInfoComboNamesOptions();
+		for (int i = 0; i < comboNames.length; i++) {
+			WebElement input = ap.getcomboName(comboNames[i]);
 			input.click();
-			// Thread.sleep(1000);
-			WebElement selected = driver.findElement(By.xpath(SelectAdditionalOption[i]));
+			WebElement selected = driver.findElement(By.xpath(comboNamesOption[i]));
 			selected.click();
 
 		}
+
 	}
 
-	// @Test(priority = 8)
 	public void selectCalendar() {
 
 		String calendar = "//input[@name='SLAExpirationDate__c']";
@@ -212,29 +186,27 @@ public class AccountTab extends DriverFactory {
 		days.get(30).click();
 	}
 
-	// @Test(priority = 9)
 	public void create() {
-		String save = "//button[@name='SaveEdit']";
-		driver.findElement(By.xpath(save)).click();
+		AccountPage ap = new AccountPage(driver);
+		ap.getSaveBtn().click();
 	}
 
 	// Parte 3
 
 	public static void check() throws InterruptedException {
 
-		String accountName = "//label[text()='Account Name']//parent::lightning-input//descendant::input";
-		driver.findElement(By.xpath(accountName)).sendKeys("");
+		AccountPage ap = new AccountPage(driver);
 
-		String save = "//button[@name='SaveEdit']";
-		driver.findElement(By.xpath(save)).click();
+		// Find required field and sends empty keys
+		String[] accountName = ap.getAccountInfoLblNames();
+		WebElement input = ap.getlblName(accountName[0]);
+		input.sendKeys("");
+		// Clicks save btn
+		ap.getSaveBtn().click();
 
-		String container = "//div[@class='container']";
-		Thread.sleep(1000);
-
-		// SoftAssert softassert = new SoftAssert();
-
-		if (driver.findElement(By.xpath(container)).isDisplayed()) {
-
+		wait.until(ExpectedConditions.visibilityOf(ap.getContainer()));
+		// Thread.sleep(3000);
+		if (ap.getContainer().isDisplayed()) {
 			Assert.assertTrue(false, "Faltan datos en Account Name");
 
 		} else {
@@ -246,43 +218,30 @@ public class AccountTab extends DriverFactory {
 	// Parte 5
 
 	public void onlyNavigateToAccount() throws InterruptedException {
+		NavPage np = new NavPage(driver);
+		np.getAccounts().click();
 
-		WebElement iconwaflebtn = driver.findElement(By.xpath(prop.getProperty("iconWafleBtn")));
-		wait.until(ExpectedConditions.visibilityOf(iconwaflebtn));
-		iconwaflebtn.click();
-
-		WebElement iconWafleServiceBtn = driver.findElement(By.xpath(prop.getProperty("iconWafleServiceBtn")));// Changing
-		wait.until(ExpectedConditions.visibilityOf(iconWafleServiceBtn));
-		iconWafleServiceBtn.click();
-
-		WebElement account = driver.findElement(By.xpath("//one-app-nav-bar-item-root[3]"));
-		wait.until(ExpectedConditions.visibilityOf(account));
-		account.click();
 	}
 
 	public void arrow() throws InterruptedException {
+		AccountPage ap = new AccountPage(driver);
 
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(prop.getProperty("iconWafleBtn")))));
-		driver.findElement(By.xpath(prop.getProperty("iconWafleBtn"))).click();
-
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(prop.getProperty("arrow")))));
-		driver.findElement(By.xpath(prop.getProperty("arrow"))).click();
-
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(prop.getProperty("edit")))));
-		driver.findElement(By.xpath(prop.getProperty("edit"))).click();
+		ap.getArrow().click();
+		ap.getEdit().click();
 
 	}
 
-	public void changeOptions() {
+	public void changeOptions() throws InterruptedException {
 
-		String comboNames[] = { "Type", "Rating" };
-		String changeCombosOptions[] = { "//lightning-base-combobox-item [5]", "//lightning-base-combobox-item [2]" };
+		AccountPage ap = new AccountPage(driver);
+
+		String[] comboNames = ap.getChangeCombos();
+		String[] comboNamesOption = ap.getChangeCombosOptions();
 
 		for (int i = 0; i < comboNames.length; i++) {
-			WebElement input = driver.findElement(
-					By.xpath("//label[text()='" + comboNames[i] + "']//parent::lightning-combobox//descendant::input"));
+			WebElement input = ap.getcomboName(comboNames[i]);
 			input.click();
-			WebElement selected = driver.findElement(By.xpath(changeCombosOptions[i]));
+			WebElement selected = driver.findElement(By.xpath(comboNamesOption[i]));
 			selected.click();
 
 		}
@@ -291,38 +250,39 @@ public class AccountTab extends DriverFactory {
 		js.executeScript("window.scrollBy(0,500)");
 		js.executeScript("document.querySelector('.actionBody').scrollTop=5000");
 
-		String[] comboLastNames = { "Upsell Opportunity" };
-		String comboLastNamesOption[] = { "(//force-record-layout-item) [24] //lightning-base-combobox-item[3]" };
+		Thread.sleep(3000);
+
+		String[] comboLastNames = ap.getChangeLastCombos();
+		String[] comboLastNamesOption = ap.getChangeLastCombosOptions();
 
 		for (int i = 0; i < comboLastNames.length; i++) {
-			WebElement input = driver.findElement(By.xpath(
-					"//label[text()='" + comboLastNames[i] + "']//parent::lightning-combobox//descendant::input"));
+			WebElement input = ap.getcomboName(comboLastNames[i]);
 			input.click();
 			WebElement selected = driver.findElement(By.xpath(comboLastNamesOption[i]));
 			selected.click();
 
 		}
-
-		driver.findElement(By.xpath(prop.getProperty("save"))).click();
+		Thread.sleep(1000);
+		ap.getSaveBtn().click();
 
 	}
 
 	public void verifyChange() {
+		AccountPage ap = new AccountPage(driver);
 		// Opciones del objeto
-		String typeOption = "//lightning-base-combobox-item [7]";
-		String ratingOption = "//lightning-base-combobox-item [3]";
-		String upsellOportunityOption = "(//force-record-layout-item) [24] //lightning-base-combobox-item[2]";
+		String typeOption = ap.getAccountInfoComboNamesOption()[0];
+		String ratingOption = ap.getAccountInfoComboNamesOption()[2];
+		String upsellOportunityOption = ap.getAditionalAddresInfoComboNamesOptions()[3];
 
 		// Opciones luego de haberlas cambiado
 
-		String typeOptionChanged = "//lightning-base-combobox-item [5]";
-		String ratingOptionChanged = "//lightning-base-combobox-item [2]";
-		String upsellOportunityOptionChanged = "(//force-record-layout-item) [24] //lightning-base-combobox-item[3]";
+		String typeOptionChanged = ap.getChangeCombosOptions()[0];
+		String ratingOptionChanged = ap.getChangeCombosOptions()[1];
+		String upsellOportunityOptionChanged = ap.getChangeLastCombosOptions()[0];
 
-		Assert.assertNotEquals(typeOption, typeOptionChanged);
 		Assert.assertNotEquals(ratingOption, ratingOptionChanged);
 		Assert.assertNotEquals(upsellOportunityOption, upsellOportunityOptionChanged);
-		
+
 		if (typeOption != typeOptionChanged) {
 			Assert.assertTrue(true);
 			System.out.println("Opcion type modificada");
@@ -344,32 +304,33 @@ public class AccountTab extends DriverFactory {
 			Assert.assertTrue(false);
 		}
 	}
-	
-	
-	//Parte 6
-	
-	public void changeEmployees()  {
-		WebElement emp = driver.findElement(By.xpath(prop.getProperty("employees")));
-		emp.clear();
-		emp.sendKeys("1431655766.");
-		
+
+	// Parte 6
+
+	public void changeEmployees() throws InterruptedException {
+		AccountPage ap = new AccountPage(driver);
+		WebElement input = ap.getlblName("Employees");
+		input.clear();
+
+		input.sendKeys("1431655766.");
+		Thread.sleep(3000);
+
 	}
 
 	public void savesErrorMsg() throws InterruptedException {
-		
-		
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(prop.getProperty("save")))));
-		driver.findElement(By.xpath(prop.getProperty("save"))).click();
+
+		AccountPage ap = new AccountPage(driver);
+		ap.getSaveBtn().click();
+
+		String errorMsg = ap.getErrorMsg().getText();
+		String expectedErrorMsg = "Employees: value outside of valid range on numeric field: 1431655766";
+
+		Assert.assertEquals(errorMsg, expectedErrorMsg);
 		
 	
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(prop.getProperty("errorMsg")))));
-		String errorMsg = driver.findElement(By.xpath(prop.getProperty("errorMsg"))).getText();
-		
-		String expectedErrorMsg = "Employees: value outside of valid range on numeric field: 1431655766";
-		
-		Assert.assertEquals(errorMsg, expectedErrorMsg);
 	}
-	@AfterClass
+
+	@AfterMethod
 	public void close() {
 		driver.close();
 	}

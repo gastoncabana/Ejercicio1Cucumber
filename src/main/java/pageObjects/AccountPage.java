@@ -72,6 +72,9 @@ public class AccountPage extends DriverFactory {
 	@FindBy(xpath = "//button[@name='SaveEdit']")
 	private WebElement saveBtn;
 
+	@FindBy (xpath="//label[text()='Description']//parent::lightning-textarea//descendant::textarea")
+	private String description;
+	
 	@FindBy(xpath  = "//div[@class='container']")
 	private WebElement container;
 	
@@ -110,6 +113,9 @@ public class AccountPage extends DriverFactory {
 	
 	public WebElement getSaveBtn() {
 		return saveBtn;
+	}
+	public String getDescription() {
+		return description;
 	}
 	
 	public WebElement getContainer() {

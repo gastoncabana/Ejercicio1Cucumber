@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
-  <test thread-count="5" name="Test(failed)">
+  <test thread-count="5" name="Account Tab test(failed)">
     <classes>
-      <class name="testNGClasses.NavigateBetweenTabs">
+      <class name="testNGClasses.AccountTab">
         <methods>
-          <include name="ejecucion"/>
           <include name="driver"/>
           <include name="close"/>
+          <include name="login"/>
+          <include name="parte3"/>
         </methods>
-      </class> <!-- testNGClasses.NavigateBetweenTabs -->
+      </class> <!-- testNGClasses.AccountTab -->
     </classes>
-  </test> <!-- Test(failed) -->
+  </test> <!-- Account Tab test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

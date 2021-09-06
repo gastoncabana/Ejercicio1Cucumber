@@ -453,9 +453,6 @@ public class stepDefinitions extends DriverFactory {
 		ap.getSaveBtn().click();
     }
 	
-		
-		
-	
 
 	@And("^verify if options where changed$")
 	public void verify_if_options_where_changed() throws Throwable {
