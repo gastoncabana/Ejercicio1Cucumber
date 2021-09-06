@@ -60,7 +60,6 @@ public class ContactTab extends DriverFactory {
 		fillAdditionalAddressInformationCombo();
 		create();
 		returnHomePage();
-		close();
 		
 	}
 
@@ -211,8 +210,9 @@ public class ContactTab extends DriverFactory {
 		ap.getSaveBtn().click();
 	}
 
-	
+	@AfterMethod
 	public void close() {
+		driver.quit();
 		driver.close();
 	}
 }

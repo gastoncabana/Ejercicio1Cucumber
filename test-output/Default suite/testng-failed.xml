@@ -8,6 +8,7 @@
           <include name="login"/>
           <include name="parte4"/>
           <include name="driver"/>
+          <include name="close"/>
         </methods>
       </class> <!-- testNGClasses.ContactTab -->
     </classes>
